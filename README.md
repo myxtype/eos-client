@@ -21,14 +21,14 @@ composer.json
 
 # Initialization
 
-```
+```php
 use xtype\Eos\Client as EosClient;
 
 $client = new EosClient('http://api-kylin.eosasia.one');
 ```
 
 GuzzleHttp Options.
-```
+```php
 $client = new EosClient([
     'base_uri' => 'http://api-kylin.eosasia.one',
     'timeout' => 20,
@@ -39,7 +39,7 @@ $client = new EosClient([
 You can visit https://developers.eos.io/eosio-nodeos/v1.4.0/reference  View all RPC Method.
 
 - chain
-```
+```php
 $chain = $client->chain();
 // You can do this
 // will visit http://api-kylin.eosasia.one/v1/chain/get_info
@@ -55,7 +55,7 @@ var_dump($chain->getBlock(['block_num_or_id' => 5]));
 ```
 
 - history
-```
+```php
 $history = $client->history();
 var_dump($history->getTransaction([
     'id' => '5fff1dae8dc8e2fc4d5b23b2c7665c97f9e9d8edf2b6485a86ba311c25639191'
@@ -63,18 +63,18 @@ var_dump($history->getTransaction([
 ```
 
 - net
-```
+```php
 $net = $client->net();
 var_dump($net->status());
 ```
 
 - producer
-```
+```php
 $producer = $client->producer();
 ```
 
 - wallet
-```
+```php
 $wallet = $client->wallet();
 
 $wallet->sign_transaction([
@@ -89,7 +89,7 @@ $wallet->sign_transaction([
 # ECC
 
 - privateToPublic
-```
+```php
 use xtype\Eos\Ecc;
 
 $privateWif = '5**********';
@@ -99,7 +99,7 @@ var_dump($public);
 ```
 
 - randomKey
-```
+```php
 use xtype\Eos\Ecc;
 
 // 随机生成私钥
@@ -109,7 +109,7 @@ var_dump($randomKey);
 ```
 
 - seedPrivate
-```
+```php
 use xtype\Eos\Ecc;
 
 $privateWif = Ecc::seedPrivate('secret')
@@ -125,7 +125,7 @@ var_dump($privateWif);
 # Offline Transtion
 Offline Signature and Transaction
 
-```
+```php
 use xtype\Eos\Client;
 
 $client = new Client('http://api-kylin.eosasia.one');
