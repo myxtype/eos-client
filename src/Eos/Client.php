@@ -37,20 +37,30 @@ class Client
      */
     public function addPrivateKeys(array $priKeys)
     {
+        $temp = [];
         foreach ($priKeys as $key => $value) {
-            if (!Ecc::isValidPrivate($value)) {
+            try {
+                $temp[Ecc::privateToPublic($value)] = $value;
+            } catch(\Exception $e) {
                 throw new \Exception("$value Is Error Wif Private Key", 1);
             }
         }
-        $this->priKeys = array_unique(array_merge($this->priKeys, $priKeys));
+        $this->priKeys = array_unique(array_merge($this->priKeys, $temp));
     }
 
     /**
-     * 移除私钥
+     * 获取需要私钥签名对应的公钥列表
      */
-    public function removePrivateKeys(array $priKeys)
+    public function getRequiredKeys($transaction)
     {
-        $this->priKeys = array_unique(array_diff($this->priKeys, $priKeys));
+        if (isset($transaction['expiration'])) {
+            // 2018-11-28T09:23:21.000';
+            $transaction['expiration'] = date('Y-m-d\TH:i:s.000', $transaction['expiration']);
+        }
+        return $this->chain()->getRequiredKeys([
+            'transaction' => $transaction,
+            'available_keys' => array_keys($this->priKeys),
+        ]);
     }
 
     /**
@@ -58,9 +68,10 @@ class Client
      */
     public function transaction(array $transaction, $blocksBehind = 3, $expireSeconds = 30)
     {
-        // 序列化 Action Data
+        $chain =  $this->chain();
+        //
         foreach ($transaction['actions'] as $key => $value) {
-            $transaction['actions'][$key]['data'] = $this->chain()->abiJsonToBin([
+            $transaction['actions'][$key]['data'] = $chain->abiJsonToBin([
                 'code' => $value['account'],
                 'action' => $value['name'],
                 'args' => $value['data'],
@@ -68,20 +79,17 @@ class Client
         }
 
         // 获取区块信息
-        $info = $this->chain()->getInfo();
-        $block = $this->chain()->getBlock([
+        $info = $chain->getInfo();
+        $block = $chain->getBlock([
             'block_num_or_id' => $info->head_block_num - $blocksBehind
         ]);
 
         // 设置交易过期时间，UTC时区
         $default = date_default_timezone_get();
         date_default_timezone_set('UTC');
-        $expiration = strtotime($info->head_block_time) + $expireSeconds;
-        date_default_timezone_set($default);
-
         // 合并数据
         $transaction = array_merge([
-            'expiration' => $expiration,
+            'expiration' => strtotime($info->head_block_time) + $expireSeconds,
             'ref_block_num' => $block->block_num & 0xffff,
             'ref_block_prefix' => $block->ref_block_prefix,
             'max_net_usage_words' => 0,
@@ -95,8 +103,12 @@ class Client
         // 序列化交易
         $st = $this->serializeTransaction($transaction);
         $chainId = $info->chain_id;
-        // 签名：
-        $signatures = $this->signTransaction($chainId, $st);
+        // 需要用来签名的公钥列表
+        $requiredKeys = $this->getRequiredKeys($transaction)->required_keys;
+        // 将时区设置会默认的
+        date_default_timezone_set($default);
+        // 签名
+        $signatures = $this->signTransaction($chainId, $st, $requiredKeys);
 
         return $this->chain()->pushTransaction([
             'signatures' => $signatures,
@@ -119,14 +131,14 @@ class Client
      * 事物签名
      * @return Array
      */
-    public function signTransaction(string $chainId, $st)
+    public function signTransaction(string $chainId, $st, $requiredKeys)
     {
         $packedContextFreeData = '0000000000000000000000000000000000000000000000000000000000000000';
         $signBuf = $chainId . $st . $packedContextFreeData;
 
         $signatures = [];
-        foreach ($this->priKeys as $key => $value) {
-            $signatures[] = Ecc::sign($signBuf, $value);
+        foreach ($requiredKeys as $key => $value) {
+            $signatures[] = Ecc::sign($signBuf, $this->priKeys[$value]);
         }
 
         return $signatures;
