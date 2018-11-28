@@ -20,3 +20,8 @@ var_dump($chain->getBlock(['block_num_or_id' => 5]));
 
 // And you can see all rpc
 // https://developers.eos.io/eosio-nodeos/v1.4.0/reference
+
+// set version
+$client->version(1)->chain()->get_info();
+// $client->version('v1')->chain();
+// $client->version('v2')->chain();

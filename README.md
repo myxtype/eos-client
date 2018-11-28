@@ -52,6 +52,12 @@ var_dump($client->chain()->get_info()->chain_id);
 
 // get_block
 var_dump($chain->getBlock(['block_num_or_id' => 5]));
+
+// set version
+$client->version(1)->chain();
+// $client->version('v1')->chain();
+// $client->version('v2')->chain();
+
 ```
 
 - history

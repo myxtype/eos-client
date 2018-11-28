@@ -13,7 +13,7 @@ class Client
     protected $priKeys = [];
 
     // Plugin version
-    public $version = 'v1';
+    public $version = 1;
 
     /**
      *
@@ -137,7 +137,7 @@ class Client
      */
     public function chain()
     {
-        return new Plugin("{$this->version}/chain", $this);
+        return new Plugin("v{$this->version}/chain", $this);
     }
 
     /**
@@ -145,7 +145,7 @@ class Client
      */
     public function history()
     {
-        return new Plugin("{$this->version}/history", $this);
+        return new Plugin("v{$this->version}/history", $this);
     }
 
     /**
@@ -153,7 +153,7 @@ class Client
      */
     public function net()
     {
-        return new Plugin("{$this->version}/net", $this);
+        return new Plugin("v{$this->version}/net", $this);
     }
 
     /**
@@ -161,7 +161,7 @@ class Client
      */
     public function dbSize()
     {
-        return new Plugin("{$this->version}/db_size", $this);
+        return new Plugin("v{$this->version}/db_size", $this);
     }
 
     /**
@@ -177,7 +177,21 @@ class Client
      */
     public function wallet()
     {
-        return new Plugin("{$this->version}/wallet", $this);
+        return new Plugin("v{$this->version}/wallet", $this);
+    }
+
+    /**
+     * 设置版本
+     * @return this
+     */
+    public function version($version)
+    {
+        if (strtolower(substr($version, 0, 1)) == 'v') {
+            $this->version = substr($version, 1);
+        } else {
+            $this->version = $version;
+        }
+        return $this;
     }
 
     /**
