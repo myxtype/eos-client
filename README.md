@@ -7,7 +7,7 @@ eos client offline signature for PHP
 
 composer.json
 
-```
+```json
 {
     "require": {
         "myxtype/eos-client": "dev-master"
@@ -15,9 +15,9 @@ composer.json
 }
 ```
 
-> 或者 `composer require myxtype/eos-client`
-
 然后`composer update`即可。
+
+> 或者直接 `composer require myxtype/eos-client`
 
 # Initialization
 
