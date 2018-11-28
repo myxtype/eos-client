@@ -10,7 +10,7 @@
     "require": {
         "simplito/elliptic-php": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
-        "stephenhill/base58": "1.1"
+        "stephenhill/base58": "^1.1"
     },
     "autoload": {
         "psr-4": {
