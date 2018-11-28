@@ -10,12 +10,12 @@ composer.json
 ```
 {
     "require": {
-        "myxtype/ethereum-client": "dev-master"
+        "myxtype/eos-client": "dev-master"
     }
 }
 ```
 
-> 或者 `composer require myxtype/ethereum-client`
+> 或者 `composer require myxtype/eos-client`
 
 然后`composer update`即可。
 
