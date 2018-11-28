@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use xtype\Eos\Client;
-use xtype\Eos\Utils;
 
 $client = new Client('http://api-kylin.eosasia.one');
 //
