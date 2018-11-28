@@ -6,13 +6,10 @@ use GuzzleHttp\Client as GuzzleHttp;
 
 class Client
 {
-    // instence
-    public static $instence = null;
-
     // GuzzleHttp
     protected $client = null;
 
-    // 私钥列表
+    // Wif private keys
     protected $priKeys = [];
 
     // Plugin version
@@ -33,17 +30,6 @@ class Client
         } else {
             $this->client = new GuzzleHttp(array_merge($defaultOptions, $options));
         }
-    }
-
-    /**
-     * 获取一个默认单列
-     */
-    public static function instance()
-    {
-        if (self::$instence == null) {
-            self::$instence = new static(config('common.eos.host'));
-        }
-        return self::$instence;
     }
 
     /**

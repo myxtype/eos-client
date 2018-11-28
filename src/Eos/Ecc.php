@@ -12,14 +12,6 @@ use Elliptic\HmacDRBG;
 class Ecc
 {
     /**
-     * 私钥
-     */
-    public function __construct()
-    {
-
-    }
-
-    /**
      * Wif private key To private hex
      */
     public static function wifPrivateToPrivateHex(string $privateKey)

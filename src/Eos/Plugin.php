@@ -3,14 +3,14 @@
 namespace xtype\Eos;
 
 /**
- * 插件基础类
+ * Plugin Base
  */
 class Plugin
 {
-    // Eos
+    // \xtype\Eos\Client
     protected $client = null;
 
-    // name
+    // Path
     protected $path = '';
 
     /**
