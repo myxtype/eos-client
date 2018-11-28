@@ -25,7 +25,6 @@ composer.json
 use xtype\Eos\Client as EosClient;
 
 $client = new EosClient('http://api-kylin.eosasia.one');
-
 ```
 
 GuzzleHttp Options.
