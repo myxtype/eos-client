@@ -84,9 +84,9 @@ $wallet->sign_transaction([
 ]);
 ```
 
--
-
 # ECC
+
+https://github.com/EOSIO/eosjs-ecc
 
 - privateToPublic
 ```php
