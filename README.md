@@ -122,7 +122,7 @@ var_dump($privateWif);
 - sign
 - signHash
 
-# Offline Transtion
+# Offline transaction
 Offline Signature and Transaction
 
 ```php
@@ -135,8 +135,8 @@ $client->addPrivateKeys([
     '5JC6gzzaKU4L6dP7AkmRPXJMcYqJxJ8iNB9tNwd2g4VbpRf5CPC'
 ]);
 
-// 2. build your transtion
-$tx = $client->transtion([
+// 2. build your transaction
+$tx = $client->transaction([
     'actions' => [
         [
             'account' => 'eosio.token',

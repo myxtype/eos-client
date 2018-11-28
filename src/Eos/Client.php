@@ -56,11 +56,11 @@ class Client
     /**
      * 交易
      */
-    public function transtion(array $transtion, $blocksBehind = 3, $expireSeconds = 30)
+    public function transaction(array $transaction, $blocksBehind = 3, $expireSeconds = 30)
     {
         // 序列化 Action Data
-        foreach ($transtion['actions'] as $key => $value) {
-            $transtion['actions'][$key]['data'] = $this->chain()->abiJsonToBin([
+        foreach ($transaction['actions'] as $key => $value) {
+            $transaction['actions'][$key]['data'] = $this->chain()->abiJsonToBin([
                 'code' => $value['account'],
                 'action' => $value['name'],
                 'args' => $value['data'],
@@ -80,7 +80,7 @@ class Client
         date_default_timezone_set($default);
 
         // 合并数据
-        $transtion = array_merge([
+        $transaction = array_merge([
             'expiration' => $expiration,
             'ref_block_num' => $block->block_num & 0xffff,
             'ref_block_prefix' => $block->ref_block_prefix,
@@ -90,13 +90,13 @@ class Client
             'context_free_actions' => [],
             'actions' => [],
             'transaction_extensions' => [],
-        ], $transtion);
+        ], $transaction);
 
         // 序列化交易
-        $st = $this->serializeTransaction($transtion);
+        $st = $this->serializeTransaction($transaction);
         $chainId = $info->chain_id;
         // 签名：
-        $signatures = $this->signTranstion($chainId, $st);
+        $signatures = $this->signTransaction($chainId, $st);
 
         return $this->chain()->pushTransaction([
             'signatures' => $signatures,
@@ -110,19 +110,19 @@ class Client
      * 序列化交易
      * @return 返回序列化交易的十六进制
      */
-    public function serializeTransaction(array $transtion)
+    public function serializeTransaction(array $transaction)
     {
-        return Serialize::transtion($transtion);
+        return Serialize::transaction($transaction);
     }
 
     /**
      * 事物签名
      * @return Array
      */
-    public function signTranstion(string $chainId, $stranstion)
+    public function signTransaction(string $chainId, $st)
     {
         $packedContextFreeData = '0000000000000000000000000000000000000000000000000000000000000000';
-        $signBuf = $chainId . $stranstion . $packedContextFreeData;
+        $signBuf = $chainId . $st . $packedContextFreeData;
 
         $signatures = [];
         foreach ($this->priKeys as $key => $value) {

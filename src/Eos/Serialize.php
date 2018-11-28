@@ -27,7 +27,7 @@ class Serialize
         'context_free_actions' => 'f_vector',
     ];
 
-    public static function transtion(array $data)
+    public static function transaction(array $data)
     {
         return self::encode($data);
     }
