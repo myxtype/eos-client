@@ -37,6 +37,8 @@ $client = new EosClient([
 
 # RPC
 You can visit https://developers.eos.io/eosio-nodeos/v1.4.0/reference  View all RPC Method.
+
+- chain
 ```
 $chain = $client->chain();
 // You can do this
@@ -51,6 +53,38 @@ var_dump($client->chain()->get_info()->chain_id);
 // get_block
 var_dump($chain->getBlock(['block_num_or_id' => 5]));
 ```
+
+- history
+```
+$history = $client->history();
+var_dump($history->getTransaction([
+    'id' => '5fff1dae8dc8e2fc4d5b23b2c7665c97f9e9d8edf2b6485a86ba311c25639191'
+]));
+```
+
+- net
+```
+$net = $client->net();
+var_dump($net->status());
+```
+
+- producer
+```
+$producer = $client->producer();
+```
+
+- wallet
+```
+$wallet = $client->wallet();
+
+$wallet->sign_transaction([
+    'txn' => '',
+    'keys' => '',
+    'id' => '',
+]);
+```
+
+-
 
 # ECC
 
@@ -88,7 +122,7 @@ var_dump($privateWif);
 - sign
 - signHash
 
-# transtion
+# Offline Transtion
 Offline Signature and Transaction
 
 ```
