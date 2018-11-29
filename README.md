@@ -118,7 +118,7 @@ var_dump($randomKey);
 ```php
 use xtype\Eos\Ecc;
 
-$privateWif = Ecc::seedPrivate('secret')
+$privateWif = Ecc::seedPrivate('secret');
 var_dump($privateWif);
 // 5J9YKiVU3AWNkCa2zfQpj1f2NAeMQhLsYU51N8NM28J1bMnmrEQ
 ```

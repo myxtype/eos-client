@@ -2,12 +2,7 @@
 
 namespace xtype\Eos;
 
-use BN\BN;
 use Elliptic\EC;
-use Elliptic\Curve\PresetCurve;
-use Elliptic\EC\KeyPair;
-use Elliptic\EC\Signature as ECSignature;
-use Elliptic\HmacDRBG;
 
 class Ecc
 {
