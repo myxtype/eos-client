@@ -46,6 +46,7 @@ class Client
             }
         }
         $this->priKeys = array_unique(array_merge($this->priKeys, $temp));
+        return $this;
     }
 
     /**
