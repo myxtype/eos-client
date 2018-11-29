@@ -8,6 +8,8 @@ class Client
 {
     // GuzzleHttp
     protected $client = null;
+    // Error
+    protected $error = null;
 
     // Wif private keys
     protected $priKeys = [];
@@ -222,12 +224,22 @@ class Client
             return json_decode($res->getBody());
         } catch(\GuzzleHttp\Exception\RequestException $e) {
             if ($e->hasResponse()) {
-                $body = json_decode($e->getResponse()->getBody());
-                // var_dump($body);
-                throw new \Exception(json_encode($body->error->details), $body->code);
+                $error = json_decode($e->getResponse()->getBody());
+                $this->error = $error;
+                throw new \Exception($error->message, $error->code);
+            } else {
+                $this->error = null;
             }
         }
 
         return null;
+    }
+
+    /**
+     * 获取响应错误详细信息
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 }
