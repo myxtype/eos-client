@@ -17,7 +17,7 @@ composer.json
 
 然后`composer update`即可。
 
-> 或者直接 `composer require myxtype/eos-client`
+> 或者直接 `composer require myxtype/eos-client:dev-master`
 
 # Initialization
 
