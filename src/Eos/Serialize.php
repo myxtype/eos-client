@@ -46,39 +46,20 @@ class Serialize
         return $buffer;
     }
 
-    public static function f_uint8($i)
+    public static function f_uint8(int $i)
     {
-        $i = is_int($i) ? pack("C", $i) : unpack("C", $i)[1];
-        return bin2hex($i);
+        return bin2hex(pack("C", $i));
     }
 
-    public static function f_uint16($i, $endianness = false)
+    public static function f_uint16(int $i)
     {
-        $f = is_int($i) ? "pack" : "unpack";
-
-        if ($endianness === true) {  // big-endian
-            $i = $f("n", $i);
-        } else if ($endianness === false) {  // little-endian
-            $i = $f("v", $i);
-        } else if ($endianness === null) {  // machine byte order
-            $i = $f("S", $i);
-        }
-        $i = is_array($i) ? $i[1] : $i;
-        return bin2hex($i);
+        $i = pack('v', $i);
+        return bin2hex(is_array($i) ? $i[1] : $i);
     }
 
-    public static function f_uint32($i, $endianness = false)
+    public static function f_uint32(int $i)
     {
-        $f = is_int($i) ? "pack" : "unpack";
-
-        if ($endianness === true) {  // big-endian
-            $i = $f("N", $i);
-        } else if ($endianness === false) {  // little-endian
-            $i = $f("V", $i);
-        } else if ($endianness === null) {  // machine byte order
-            $i = $f("L", $i);
-        }
-        return bin2hex($i);
+        return bin2hex(pack('V', $i));
     }
 
     public static function f_varuint32($i)
