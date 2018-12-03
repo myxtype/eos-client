@@ -226,7 +226,12 @@ class Client
             if ($e->hasResponse()) {
                 $error = json_decode($e->getResponse()->getBody());
                 $this->error = $error;
-                throw new \Exception($error->message, $error->code);
+                // Error Message
+                $message = $error->error->what;
+                if (isset($error->error->details)) {
+                    $message = $error->error->details[0]->message;
+                }
+                throw new \Exception($message, $error->code);
             } else {
                 $this->error = null;
             }
