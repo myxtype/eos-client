@@ -9,15 +9,29 @@ use Elliptic\HmacDRBG;
 use BN\BN;
 use Elliptic\EC;
 
+/**
+ * Class Signature
+ * @package xtype\Eos
+ */
 class Signature
 {
     public $ec;
 
+    /**
+     * Signature constructor.
+     */
     public function __construct()
     {
         $this->ec = new EC('secp256k1');
     }
 
+    /**
+     * @param $data
+     * @param $key
+     * @param $i
+     * @return ECSignature
+     * @throws \Exception
+     */
     public function sign($data, $key, $i)
     {
         $key = $this->ec->keyFromPrivate($key, []);
@@ -36,6 +50,7 @@ class Signature
         // Zero-extend nonce to have the same byte size as N
         $nonce = $msg->toArray("be", $bytes);
 
+        $options = [];
         $kFunc = null;
         if( isset($options["k"]) )
             $kFunc = $options["k"];
@@ -98,6 +113,11 @@ class Signature
         }
     }
 
+    /**
+     * @param $msg
+     * @param bool $truncOnly
+     * @return mixed
+     */
     private function _truncateToN($msg, $truncOnly = false)
     {
         $delta = intval(($msg->byteLength() * 8) - $this->ec->n->bitLength());

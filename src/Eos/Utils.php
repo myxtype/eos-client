@@ -8,8 +8,12 @@ class Utils
 {
     /**
      * 检查并返回十六进制私钥
+     * @param $key
+     * @param string $keyType
+     * @return string
+     * @throws \Exception
      */
-    public static function checkDecode(string $key, $keyType = 'sha256x2')
+    public static function checkDecode($key, $keyType = 'sha256x2')
     {
         $b58 = new Base58();
         $keyBin = $b58->decode($key);
@@ -17,7 +21,6 @@ class Utils
         // check
         $checksum = substr($keyBin, -4);
 
-        $newCheck = 0;
         if ($keyType === 'sha256x2') {
             // legacy
             $newCheck = substr(hash('sha256', hash('sha256', $key, true), true), 0, 4);
@@ -36,9 +39,12 @@ class Utils
     }
 
     /**
-     *
+     * @param $bin
+     * @param string $keyType
+     * @return string
+     * @throws \Exception
      */
-    public static function checkEncode(string $bin, $keyType = 'sha256x2')
+    public static function checkEncode($bin, $keyType = 'sha256x2')
     {
         $b58 = new Base58();
         if ($keyType === 'sha256x2') {
@@ -51,7 +57,10 @@ class Utils
             if ($keyType) {
                 $check .= $keyType;
             }
+            var_dump(bin2hex($check));
+
             $_checksum = substr(hash('ripemd160', $check, true), 0, 4); //PVT
+
             return $b58->encode($bin . $_checksum);
         }
     }

@@ -4,6 +4,11 @@ namespace xtype\Eos;
 
 use GuzzleHttp\Client as GuzzleHttp;
 
+/**
+ * Class Client
+ * @package xtype\Eos
+ * @property GuzzleHttp $client
+ */
 class Client
 {
     // GuzzleHttp
@@ -18,7 +23,8 @@ class Client
     public $version = 1;
 
     /**
-     *
+     * Client constructor.
+     * @param array $options
      */
     public function __construct($options = [])
     {
@@ -36,6 +42,9 @@ class Client
 
     /**
      * 设置私钥
+     * @param array $priKeys
+     * @return $this
+     * @throws \Exception
      */
     public function addPrivateKeys(array $priKeys)
     {
@@ -53,6 +62,8 @@ class Client
 
     /**
      * 获取需要私钥签名对应的公钥列表
+     * @param $transaction
+     * @return mixed
      */
     public function getRequiredKeys($transaction)
     {
@@ -68,6 +79,10 @@ class Client
 
     /**
      * 交易
+     * @param array $transaction
+     * @param int $blocksBehind
+     * @param int $expireSeconds
+     * @return mixed
      */
     public function transaction(array $transaction, $blocksBehind = 3, $expireSeconds = 30)
     {
@@ -123,7 +138,8 @@ class Client
 
     /**
      * 序列化交易
-     * @return 返回序列化交易的十六进制
+     * @param array $transaction
+     * @return string
      */
     public function serializeTransaction(array $transaction)
     {
@@ -132,9 +148,13 @@ class Client
 
     /**
      * 事物签名
-     * @return Array
+     * @param $chainId
+     * @param $st
+     * @param $requiredKeys
+     * @return array
+     * @throws \Exception
      */
-    public function signTransaction(string $chainId, $st, $requiredKeys)
+    public function signTransaction($chainId, $st, $requiredKeys)
     {
         $packedContextFreeData = '0000000000000000000000000000000000000000000000000000000000000000';
         $signBuf = $chainId . $st . $packedContextFreeData;
@@ -148,7 +168,7 @@ class Client
     }
 
     /**
-     * Plugin chain rpc
+     * @return Plugin
      */
     public function chain()
     {
@@ -156,7 +176,7 @@ class Client
     }
 
     /**
-     * Plugin history rpc
+     * @return Plugin
      */
     public function history()
     {
@@ -164,7 +184,7 @@ class Client
     }
 
     /**
-     * Plugin net rpc
+     * @return Plugin
      */
     public function net()
     {
@@ -172,7 +192,7 @@ class Client
     }
 
     /**
-     * Plugin db_size rpc
+     * @return Plugin
      */
     public function dbSize()
     {
@@ -180,7 +200,7 @@ class Client
     }
 
     /**
-     * Plugin db_size rpc
+     * @return Plugin
      */
     public function db_size()
     {
@@ -188,7 +208,7 @@ class Client
     }
 
     /**
-     * Plugin wallet rpc
+     * @return Plugin
      */
     public function wallet()
     {
@@ -197,7 +217,8 @@ class Client
 
     /**
      * 设置版本
-     * @return this
+     * @param $version
+     * @return $this
      */
     public function version($version)
     {
@@ -211,6 +232,10 @@ class Client
 
     /**
      * 发出请求
+     * @param $path
+     * @param array $params
+     * @return mixed|null
+     * @throws \Exception
      */
     public function request($path, $params = [])
     {
@@ -242,6 +267,7 @@ class Client
 
     /**
      * 获取响应错误详细信息
+     * @return null
      */
     public function getError()
     {

@@ -8,25 +8,34 @@ class Ecc
 {
     /**
      * Wif private key To private hex
+     * @param $privateKey
+     * @return bool|string
+     * @throws \Exception
      */
-    public static function wifPrivateToPrivateHex(string $privateKey)
+    public static function wifPrivateToPrivateHex($privateKey)
     {
         return substr(Utils::checkDecode($privateKey), 2);
     }
 
     /**
      * Private hex To  wif private key
+     * @param $privateHex
+     * @return string
+     * @throws \Exception
      */
-    public static function privateHexToWifPrivate(string $privateHex)
+    public static function privateHexToWifPrivate($privateHex)
     {
         return Utils::checkEncode(hex2bin('80' . $privateHex));
     }
 
     /**
-     * privateKey to Public
-     * @param $privateKey string
+     * 私钥转公钥
+     * @param $privateKey
+     * @param string $prefix
+     * @return string
+     * @throws \Exception
      */
-    public static function privateToPublic(string $privateKey, string $prefix = 'EOS')
+    public static function privateToPublic($privateKey, $prefix = 'EOS')
     {
         // wif private
         $privateHex = self::wifPrivateToPrivateHex($privateKey);
@@ -38,7 +47,9 @@ class Ecc
 
     /**
      * 随机生成私钥
-     * Random private key
+     * @param bool $wif
+     * @return string|null
+     * @throws \Exception
      */
     public static function randomKey($wif = true)
     {
@@ -51,9 +62,13 @@ class Ecc
     }
 
     /**
-    * 根据种子生产私钥
-    */
-    public static function seedPrivate(string $seed, $wif = true)
+     * 根据种子生产私钥
+     * @param $seed
+     * @param bool $wif
+     * @return string
+     * @throws \Exception
+     */
+    public static function seedPrivate($seed, $wif = true)
     {
         $secret = hash('sha256', $seed);
         if ($wif) {
@@ -64,9 +79,11 @@ class Ecc
 
     /**
      * 是否是合法公钥
-     * @return boolean
+     * @param string $public
+     * @param string $prefix
+     * @return bool
      */
-    public static function isValidPublic(string $public, string $prefix = 'EOS')
+    public static function isValidPublic($public, $prefix = 'EOS')
     {
         if (strtoupper(substr($public, 0, 3)) == strtoupper($prefix)) {
             try {
@@ -81,9 +98,10 @@ class Ecc
 
     /**
      * 是否是合法wif私钥
-     * @return boolean
+     * @param string $privateKey
+     * @return bool
      */
-    public static function isValidPrivate(string $privateKey)
+    public static function isValidPrivate($privateKey)
     {
         try {
             self::wifPrivateToPrivateHex($privateKey);
@@ -95,10 +113,12 @@ class Ecc
 
     /**
      * 签名
-     * @param $data string
-     * @param $privateKey wifi私钥
+     * @param string $data
+     * @param string $privateKey
+     * @return string
+     * @throws \Exception
      */
-    public static function sign(string $data, string $privateKey)
+    public static function sign($data, $privateKey)
     {
         $dataSha256 = hash('sha256', hex2bin($data));
         return self::signHash($dataSha256, $privateKey);
@@ -106,10 +126,12 @@ class Ecc
 
     /**
      * 对hash进行签名
-     * @param $dataSha256 sha256
-     * @param $privateKey wifi私钥
+     * @param string $dataSha256
+     * @param string $privateKey
+     * @return string
+     * @throws \Exception
      */
-    public static function signHash(string $dataSha256, string $privateKey)
+    public static function signHash($dataSha256, $privateKey)
     {
         $privHex = self::wifPrivateToPrivateHex($privateKey);
         $ecdsa = new Signature();
@@ -137,7 +159,7 @@ class Ecc
             }
         }
 
-        return 'SIG_K1_' . Utils::checkEncode(hex2bin($i . $r . $s), 'K1');
+        return 'SIG_K1_' . Utils::checkEncode(hex2bin($i . str_pad($r, 64, '0', STR_PAD_LEFT) . str_pad($s, 64, '0', STR_PAD_LEFT)), 'K1');
     }
 
     /**
@@ -165,9 +187,11 @@ class Ecc
     }
 
     /**
-     * Recover hash
+     * sha256 hash
+     * @param $data
+     * @param string $encoding
      */
-    public static function sha256(string $data, $encoding = 'hex')
+    public static function sha256($data, $encoding = 'hex')
     {
         // TODO::
         // You can to use hash('sha256') of php;

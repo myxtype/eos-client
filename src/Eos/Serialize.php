@@ -27,11 +27,20 @@ class Serialize
         'context_free_actions' => 'f_vector',
     ];
 
+    /**
+     * @param array $data
+     * @return string
+     */
     public static function transaction(array $data)
     {
         return self::encode($data);
     }
 
+    /**
+     * @param $data
+     * @param string $name
+     * @return string
+     */
     public static function encode($data, $name = '')
     {
         $buffer = '';
@@ -46,22 +55,38 @@ class Serialize
         return $buffer;
     }
 
+    /**
+     * @param int $i
+     * @return string
+     */
     public static function f_uint8(int $i)
     {
         return bin2hex(pack("C", $i));
     }
 
+    /**
+     * @param int $i
+     * @return string
+     */
     public static function f_uint16(int $i)
     {
         $i = pack('v', $i);
         return bin2hex(is_array($i) ? $i[1] : $i);
     }
 
+    /**
+     * @param int $i
+     * @return string
+     */
     public static function f_uint32(int $i)
     {
         return bin2hex(pack('V', $i));
     }
 
+    /**
+     * @param $i
+     * @return string
+     */
     public static function f_varuint32($i)
     {
         $t = '';
@@ -77,6 +102,10 @@ class Serialize
         return $t;
     }
 
+    /**
+     * @param $i
+     * @return string
+     */
     public static function f_vector($i)
     {
         $buffer = self::f_varuint32(count($i));
@@ -86,6 +115,10 @@ class Serialize
         return $buffer;
     }
 
+    /**
+     * @param $s
+     * @return string
+     */
     public static function f_name($s)
     {
         $charToSymbol = function ($c) {
@@ -118,6 +151,10 @@ class Serialize
         return $hex;
     }
 
+    /**
+     * @param $i
+     * @return string
+     */
     public static function f_data($i)
     {
         return self::f_varuint32(strlen($i) / 2) . $i;

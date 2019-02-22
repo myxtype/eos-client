@@ -3,7 +3,9 @@
 namespace xtype\Eos;
 
 /**
- * Plugin Base
+ * Class Plugin
+ * @package xtype\Eos
+ * @property Client $client
  */
 class Plugin
 {
@@ -14,8 +16,9 @@ class Plugin
     protected $path = '';
 
     /**
-     * @param $name string
-     * @param $client \xtype\Eos\Client
+     * Plugin constructor.
+     * @param $path
+     * @param $client
      */
     public function __construct($path, $client)
     {
@@ -25,6 +28,10 @@ class Plugin
 
     /**
      * 调用方法
+     * @param $method
+     * @param $args
+     * @return mixed|null
+     * @throws \Exception
      */
     public function __call($method, $args)
     {
@@ -38,6 +45,8 @@ class Plugin
 
     /**
      * 驼峰转下划线
+     * @param $str
+     * @return string
      */
     private function toUnderScore($str)
     {
