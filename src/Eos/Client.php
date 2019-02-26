@@ -147,7 +147,7 @@ class Client
     }
 
     /**
-     * 事物签名
+     * 事务签名
      * @param $chainId
      * @param $st
      * @param $requiredKeys

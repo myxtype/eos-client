@@ -57,8 +57,6 @@ class Utils
             if ($keyType) {
                 $check .= $keyType;
             }
-            var_dump(bin2hex($check));
-
             $_checksum = substr(hash('ripemd160', $check, true), 0, 4); //PVT
 
             return $b58->encode($bin . $_checksum);
