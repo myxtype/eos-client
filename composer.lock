@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a3358f767ddbf046fcf5b5b986a5ed7",
+    "content-hash": "2c67d8c1c6833baf527d650023300c2f",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -313,16 +313,16 @@
         },
         {
             "name": "simplito/elliptic-php",
-            "version": "1.0.4",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/simplito/elliptic-php.git",
-                "reference": "be6b14c6999a5c328457d571f643ef8b3f3f82d0"
+                "reference": "15652609aa55968d56685c2a9120535ccdc00fd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplito/elliptic-php/zipball/be6b14c6999a5c328457d571f643ef8b3f3f82d0",
-                "reference": "be6b14c6999a5c328457d571f643ef8b3f3f82d0",
+                "url": "https://api.github.com/repos/simplito/elliptic-php/zipball/15652609aa55968d56685c2a9120535ccdc00fd9",
+                "reference": "15652609aa55968d56685c2a9120535ccdc00fd9",
                 "shasum": ""
             },
             "require": {
@@ -369,7 +369,7 @@
                 "nistp521",
                 "secp256k1"
             ],
-            "time": "2018-05-11T07:40:56+00:00"
+            "time": "2019-11-14T13:43:07+00:00"
         },
         {
             "name": "stephenhill/base58",
@@ -416,6 +416,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-json": "*"
+    },
     "platform-dev": []
 }
